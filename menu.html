@@ -11,7 +11,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Preahvihear', 'Siemreap', 'Inter', sans-serif, Arial; }
         body { background-color: #f4f7f6; color: #333; line-height: 1.6; padding-bottom: 70px; }
         
-        /* Header Responsive */
         header { background-color: #1e293b; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; flex-wrap: wrap; gap: 8px; }
         .header-left { display: flex; align-items: center; gap: 10px; }
         .menu-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
@@ -36,7 +35,6 @@
 
         .container { max-width: 1000px; width: 100%; margin: 25px auto; padding: 0 15px; } 
         
-        /* ឈ្មោះហាងលែងមាន Background ដិត ស្អាតសាមញ្ញ */
         .header-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; background: transparent; color: #1e293b; padding: 5px 2px; }
         .shop-title-area { display: flex; align-items: center; gap: 8px; font-size: 1.15rem; font-weight: bold; color: #1e293b; cursor: pointer; }
         .shop-title-area span:first-child { color: #2563eb; }
@@ -70,7 +68,7 @@
         .desktop-table th, .desktop-table td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
         .desktop-table th { color: #1e293b; font-size: 0.85rem; font-weight: bold; background: #f8fafc; }
 
-        /* Mobile Card View (បង្ហាញស្វ័យប្រវត្តិសម្រាប់ទូរស័ព្ទដៃ) */
+        /* Mobile Card View */
         .mobile-cards-container { display: none; flex-direction: column; gap: 12px; margin-top: 10px; }
         .mobile-item-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; }
         .mobile-item-img { width: 65px; height: 65px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; flex-shrink: 0; background: #fff; cursor: pointer; }
@@ -789,7 +787,6 @@
                 renderAdminTable();
             } catch (err) {
                 document.getElementById('admin-table-body').innerHTML = `<tr><td colspan="6" style="text-align:center; color:#ef4444; padding: 20px;">Error loading menu data!</td></tr>`;
-                document.getElementById('mobile-cards-body').innerHTML = `<div style="text-align:center; color:#ef4444; padding: 20px;">Error loading menu data!</div>`;
             }
         }
 
@@ -891,11 +888,14 @@
             btnAdd.innerText = lang === 'en' ? 'Processing...' : '⏳ កំពុងដំណើរការ...';
 
             try {
-                let img1 = document.getElementById('img-url-1').value || '';
-                let img2 = document.getElementById('img-url-2').value || '';
-                let img3 = document.getElementById('img-url-3').value || '';
-                let img4 = document.getElementById('img-url-4').value || '';
-                let img5 = document.getElementById('img-url-5').value || '';
+                // ទាញយករូបភាពចាស់មកទុកជាមូលដ្ឋាន (ការពារពេលកែប្រែរូបទី២ មិនបាត់រូបទី១)
+                let existingItem = editId ? items.find(i => String(i.id) === String(editId)) : null;
+                
+                let img1 = document.getElementById('img-url-1').value || (existingItem ? existingItem.image_1 : '');
+                let img2 = document.getElementById('img-url-2').value || (existingItem ? existingItem.image_2 : '');
+                let img3 = document.getElementById('img-url-3').value || (existingItem ? existingItem.image_3 : '');
+                let img4 = document.getElementById('img-url-4').value || (existingItem ? existingItem.image_4 : '');
+                let img5 = document.getElementById('img-url-5').value || (existingItem ? existingItem.image_5 : '');
 
                 const f1 = document.getElementById('img-file-1').files[0];
                 const f2 = document.getElementById('img-file-2').files[0];
@@ -1004,9 +1004,54 @@
             Swal.fire({ icon: 'success', title: lang === 'en' ? 'Success!' : 'ជោគជ័យ!', text: lang === 'en' ? 'Deleted successfully!' : 'បានលុបដោយជោគជ័យ!', timer: 1500, showConfirmButton: false });
         }
 
-        function viewFullImage(imgSrc) {
-            if (!imgSrc) return;
-            Swal.fire({ imageUrl: imgSrc, confirmButtonText: 'Close', background: '#1f2937', color: '#f9fafb' });
+        // មុខងារបង្ហាញរូបភាពច្រើនសន្លឹក និងអាចអូស/ចុចមើលរូបនីមួយៗបាន (Lightbox Slider)
+        function viewFullImages(img1, img2, img3, img4, img5) {
+            let imgs = [img1, img2, img3, img4, img5].filter(Boolean);
+            if (imgs.length === 0) return;
+
+            let currentIndex = 0;
+
+            function showImageModal(index) {
+                let currentImg = imgs[index];
+                let paginationHtml = imgs.length > 1 ? `<div style="margin-top: 10px; font-size: 14px; color: #fbbf24;">រូបទី ${index + 1} នៃ ${imgs.length}</div>` : '';
+                let navButtons = imgs.length > 1 ? `
+                    <div style="display: flex; justify-content: space-between; margin-top: 12px; gap: 10px;">
+                        <button id="prevImgBtn" style="padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">⬅️ មុន</button>
+                        <button id="nextImgBtn" style="padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">បន្ទាប់ ➡️</button>
+                    </div>
+                ` : '';
+
+                Swal.fire({
+                    imageUrl: currentImg,
+                    imageAlt: 'Menu Image',
+                    html: paginationHtml + navButtons,
+                    showConfirmButton: true,
+                    confirmButtonText: 'បិទ',
+                    confirmButtonColor: '#64748b',
+                    background: '#1f2937',
+                    color: '#f9fafb',
+                    didOpen: () => {
+                        const prevBtn = document.getElementById('prevImgBtn');
+                        const nextBtn = document.getElementById('nextImgBtn');
+                        if (prevBtn) {
+                            prevBtn.onclick = () => {
+                                currentIndex = (currentIndex - 1 + imgs.length) % imgs.length;
+                                Swal.close();
+                                showImageModal(currentIndex);
+                            };
+                        }
+                        if (nextBtn) {
+                            nextBtn.onclick = () => {
+                                currentIndex = (currentIndex + 1) % imgs.length;
+                                Swal.close();
+                                showImageModal(currentIndex);
+                            };
+                        }
+                    }
+                });
+            }
+
+            showImageModal(currentIndex);
         }
 
         function renderAdminTable() {
@@ -1027,7 +1072,7 @@
             tbody.innerHTML = filteredItems.map(item => {
                 let imgs = [item.image_1, item.image_2, item.image_3, item.image_4, item.image_5].filter(Boolean);
                 if (imgs.length === 0) imgs = ['https://placehold.co/100?text=NoImg'];
-                let imgsHtml = imgs.map(img => `<img src="${img}" class="thumb-img" onclick="viewFullImage('${img}')">`).join('');
+                let imgsHtml = imgs.map(img => `<img src="${img}" class="thumb-img" onclick='viewFullImages("${item.image_1||""}", "${item.image_2||""}", "${item.image_3||""}", "${item.image_4||""}", "${item.image_5||""}")'>`).join('');
 
                 const isInStock = item.status === 'In Stock' || item.status === 'នៅមាន';
                 const inStockText = lang === 'en' ? '🟢 In Stock' : '🟢 នៅមាន';
@@ -1073,7 +1118,7 @@
 
                 return `
                     <div class="mobile-item-card">
-                        <img src="${mainImg}" class="mobile-item-img" onclick="viewFullImage('${mainImg}')" alt="Item">
+                        <img src="${mainImg}" class="mobile-item-img" onclick='viewFullImages("${item.image_1||""}", "${item.image_2||""}", "${item.image_3||""}", "${item.image_4||""}", "${item.image_5||""}")' alt="Item">
                         <div class="mobile-item-info">
                             <div class="mobile-item-name">${item.name || 'គ្មានឈ្មោះ'}</div>
                             <div class="mobile-item-meta">
