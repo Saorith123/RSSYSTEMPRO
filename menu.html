@@ -11,6 +11,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Preahvihear', 'Siemreap', 'Inter', sans-serif, Arial; }
         body { background-color: #f4f7f6; color: #333; line-height: 1.6; padding-bottom: 70px; }
         
+        /* Header Responsive */
         header { background-color: #1e293b; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; flex-wrap: wrap; gap: 8px; }
         .header-left { display: flex; align-items: center; gap: 10px; }
         .menu-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
@@ -58,8 +59,10 @@
         .price-group { display: flex; gap: 10px; }
         .price-group .form-group { flex: 1; }
 
-        .filter-container { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 15px; }
-        .filter-btn { background: #e2e8f0; color: #334155; border: none; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 500; }
+        /* ធ្វើឱ្យ Filter Buttons អូស (Swipe) បានរលូនស្មូត មិនញាក់ */
+        .filter-container { display: flex; gap: 8px; overflow-x: auto; white-space: nowrap; padding-bottom: 8px; margin-bottom: 15px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+        .filter-container::-webkit-scrollbar { display: none; } /* បំបាត់ Scrollbar ឱ្យមើលទៅស្អាត */
+        .filter-btn { background: #e2e8f0; color: #334155; border: none; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 500; flex-shrink: 0; }
         .filter-btn.active, .filter-btn:hover { background: #2563eb; color: #fff; }
 
         /* Tablet & PC Table View */
@@ -68,7 +71,7 @@
         .desktop-table th, .desktop-table td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
         .desktop-table th { color: #1e293b; font-size: 0.85rem; font-weight: bold; background: #f8fafc; }
 
-        /* Mobile Card View */
+        /* Mobile Card View (Swipe/Scroll ស្មូតល្អ) */
         .mobile-cards-container { display: none; flex-direction: column; gap: 12px; margin-top: 10px; }
         .mobile-item-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; }
         .mobile-item-img { width: 65px; height: 65px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; flex-shrink: 0; background: #fff; cursor: pointer; }
@@ -99,6 +102,11 @@
         .status-toggle { padding: 5px 9px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; border: none; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
         .st-in { background: #10b981; color: #fff; }
         .st-out { background: #ef4444; color: #fff; }
+
+        /* Loading Spinner CSS */
+        .loading-container { text-align: center; padding: 35px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #64748b; font-size: 0.95rem; }
+        .spinner { width: 36px; height: 36px; border: 4px solid #e2e8f0; border-top: 4px solid #2563eb; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
         .modal-box { background: #ffffff; padding: 25px; border-radius: 14px; width: 100%; max-width: 520px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-height: 90vh; overflow-y: auto; border: 1px solid #e2e8f0; color: #1e293b; }
@@ -280,6 +288,7 @@
         </div>
 
         <div class="card">
+            <!-- Filter Buttons (អូស Swipe បានយ៉ាងរលូនស្មូត) -->
             <div class="filter-container" id="filter-container">
                 <button class="filter-btn active" onclick="filterAdminTable('ទាំងអស់', this)" id="filterAllBtn">ទាំងអស់</button>
             </div>
@@ -298,14 +307,24 @@
                         </tr>
                     </thead>
                     <tbody id="admin-table-body">
-                        <tr><td colspan="6" style="text-align:center; padding: 20px;" id="loadingTxt">⏳ កំពុងទាញទិន្នន័យ...</td></tr>
+                        <tr>
+                            <td colspan="6">
+                                <div class="loading-container">
+                                    <div class="spinner"></div>
+                                    <span id="loadingTxt">⏳ កំពុងទាញទិន្នន័យ...</span>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
             <!-- Mobile Card View -->
             <div class="mobile-cards-container" id="mobile-cards-body">
-                <div style="text-align:center; padding: 20px; color: #64748b;" id="mobileLoadingTxt">⏳ កំពុងទាញទិន្នន័យ...</div>
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <span id="mobileLoadingTxt">⏳ កំពុងទាញទិន្នន័យ...</span>
+                </div>
             </div>
         </div>
     </div>
@@ -452,7 +471,7 @@
                 thPrice2: "Price 2",
                 thStatus: "Status",
                 thAction: "Action",
-                loadingTxt: "⏳ Loading data...",
+                loadingTxt: "⏳ Loading Data...",
                 txtChangeAvatar: "Change Avatar",
                 btnLogout: "Sign Out",
                 footerText: "&copy; 2026 RS System Pro. All rights reserved.",
@@ -786,7 +805,9 @@
                 renderFilterButtons();
                 renderAdminTable();
             } catch (err) {
-                document.getElementById('admin-table-body').innerHTML = `<tr><td colspan="6" style="text-align:center; color:#ef4444; padding: 20px;">Error loading menu data!</td></tr>`;
+                const errHtml = `<div style="text-align:center; color:#ef4444; padding: 20px;">Error loading menu data!</div>`;
+                document.getElementById('admin-table-body').innerHTML = `<tr><td colspan="6">${errHtml}</td></tr>`;
+                document.getElementById('mobile-cards-body').innerHTML = errHtml;
             }
         }
 
@@ -888,7 +909,6 @@
             btnAdd.innerText = lang === 'en' ? 'Processing...' : '⏳ កំពុងដំណើរការ...';
 
             try {
-                // ទាញយករូបភាពចាស់មកទុកជាមូលដ្ឋាន (ការពារពេលកែប្រែរូបទី២ មិនបាត់រូបទី១)
                 let existingItem = editId ? items.find(i => String(i.id) === String(editId)) : null;
                 
                 let img1 = document.getElementById('img-url-1').value || (existingItem ? existingItem.image_1 : '');
@@ -1004,7 +1024,6 @@
             Swal.fire({ icon: 'success', title: lang === 'en' ? 'Success!' : 'ជោគជ័យ!', text: lang === 'en' ? 'Deleted successfully!' : 'បានលុបដោយជោគជ័យ!', timer: 1500, showConfirmButton: false });
         }
 
-        // មុខងារបង្ហាញរូបភាពច្រើនសន្លឹក និងអាចអូស/ចុចមើលរូបនីមួយៗបាន (Lightbox Slider)
         function viewFullImages(img1, img2, img3, img4, img5) {
             let imgs = [img1, img2, img3, img4, img5].filter(Boolean);
             if (imgs.length === 0) return;
@@ -1013,11 +1032,17 @@
 
             function showImageModal(index) {
                 let currentImg = imgs[index];
-                let paginationHtml = imgs.length > 1 ? `<div style="margin-top: 10px; font-size: 14px; color: #fbbf24;">រូបទី ${index + 1} នៃ ${imgs.length}</div>` : '';
+                const lang = localStorage.getItem('selectedLang') || 'km';
+                let paginationText = lang === 'en' ? `Photo ${index + 1} of ${imgs.length}` : `រូបទី ${index + 1} នៃ ${imgs.length}`;
+                let closeText = lang === 'en' ? 'Close' : 'បិទ';
+                let prevText = lang === 'en' ? '⬅️ Prev' : '⬅️ មុន';
+                let nextText = lang === 'en' ? 'Next ➡️' : 'បន្ទាប់ ➡️';
+
+                let paginationHtml = imgs.length > 1 ? `<div style="margin-top: 10px; font-size: 14px; color: #fbbf24;">${paginationText}</div>` : '';
                 let navButtons = imgs.length > 1 ? `
                     <div style="display: flex; justify-content: space-between; margin-top: 12px; gap: 10px;">
-                        <button id="prevImgBtn" style="padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">⬅️ មុន</button>
-                        <button id="nextImgBtn" style="padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">បន្ទាប់ ➡️</button>
+                        <button id="prevImgBtn" style="padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">${prevText}</button>
+                        <button id="nextImgBtn" style="padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">${nextText}</button>
                     </div>
                 ` : '';
 
@@ -1026,7 +1051,7 @@
                     imageAlt: 'Menu Image',
                     html: paginationHtml + navButtons,
                     showConfirmButton: true,
-                    confirmButtonText: 'បិទ',
+                    confirmButtonText: closeText,
                     confirmButtonColor: '#64748b',
                     background: '#1f2937',
                     color: '#f9fafb',
@@ -1062,8 +1087,8 @@
             const lang = localStorage.getItem('selectedLang') || 'km';
 
             if (filteredItems.length === 0) {
-                const emptyMsg = `<div style="text-align: center; padding: 20px; color: #64748b;">${lang === 'en' ? 'No data available.' : 'មិនមានទិន្នន័យទេ។'}</div>`;
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 20px;">${lang === 'en' ? 'No data available.' : 'មិនមានទិន្នន័យទេ។'}</td></tr>`;
+                const emptyMsg = `<div style="text-align: center; padding: 25px; color: #64748b;">${lang === 'en' ? 'No data available.' : 'មិនមានទិន្នន័យទេ។'}</div>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 25px; color: #64748b;">${lang === 'en' ? 'No data available.' : 'មិនមានទិន្នន័យទេ។'}</td></tr>`;
                 mobileContainer.innerHTML = emptyMsg;
                 return;
             }
