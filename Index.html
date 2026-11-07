@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="km" id="htmlTag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">RS System Pro - ប្រព័ន្ធគ្រប់គ្រងអាជីវកម្មគ្រប់ជ្រុងជ្រោយ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Siemreap', 'Inter', sans-serif, Arial;
+        }
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        /* Header & Navigation */
+        header {
+            background-color: #1e293b;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #38bdf8;
+            text-decoration: none;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .auth-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #334155;
+            transition: 0.2s;
+        }
+        .auth-link:hover {
+            background-color: #475569;
+        }
+        
+        /* Dropdown Menu (Side Drawer) */
+        .dropdown-menu {
+            position: absolute;
+            top: 70px;
+            left: 15px;
+            background: white;
+            color: #333;
+            width: 250px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .dropdown-menu a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .dropdown-menu a:hover {
+            background-color: #f8fafc;
+            color: #2563eb;
+        }
+
+        /* Lang Switcher */
+        .lang-switcher select {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: none;
+            background-color: #334155;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 40px 20px 20px 20px;
+            max-width: 900px;
+            margin: 20px auto;
+        }
+        .hero h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+        .hero p {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        /* Features / Image Showcase Section */
+        .features-container {
+            max-width: 1100px;
+            margin: 0 auto 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .feature-img-box {
+            width: 100%;
+            height: 180px;
+            background-color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .feature-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .feature-content {
+            padding: 20px;
+        }
+        .feature-content h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+        .feature-content p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+        .btn-detail {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .btn-detail:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Auth Container (Login / Register Modal or Section) */
+        .auth-section {
+            max-width: 450px;
+            margin: 0 auto 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .auth-tabs button {
+            flex: 1;
+            padding: 10px;
+            background: none;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #475569;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .btn-submit {
+            background-color: #2563eb;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
+            font-size: 14px;
+            background: #1e293b;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <!-- សញ្ញាត្រេបី ឬ Profile Icon ខាងឆ្វេងបង្អស់ -->
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+            <a href="#" class="logo">RS System Pro</a>
+        </div>
+        
+        <div class="header-right">
+            <div class="lang-switcher">
+                <select id="langSelect" onchange="changeLanguage(this.value)">
+                    <option value="km">🇰🇭 ខ្មែរ</option>
+                    <option value="en">🇬🇧 EN</option>
+                </select>
+            </div>
+            <a href="#authSection" class="auth-link" id="navLoginBtn">ចូលគណនី</a>
+        </div>
+
+        <!-- Dropdown Menu ពេលចុចសញ្ញាត្រេបី -->
+        <div class="dropdown-menu" id="dropdownMenu">
+            <a href="#heroSection" id="menuHome">🏠 ទំព័រដើម</a>
+            <a href="#featuresSection" id="menuFeatures">⚙️ មុខងារប្រព័ន្ធ</a>
+            <a href="#authSection" id="menuAccount">👤 គណនី (Login/Register)</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero" id="heroSection">
+        <h1 id="heroTitle">ប្រព័ន្ធគ្រប់គ្រងអាជីវកម្ម និងហាងទំនិញគ្រប់ជ្រុងជ្រោយ</h1>
+        <p id="heroDesc">ជម្រើសដ៏ល្អបំផុតសម្រាប់គ្រប់គ្រងមីនុយហាង ស្តុកទំនិញ ចំណូល-ចំណាយ និងហាងបញ្ចាំដោយស្វ័យប្រវត្តិ។</p>
+    </div>
+
+    <!-- Features Showcase (រូបភាពបង្ហាញមុខងារនីមួយៗ) -->
+    <div class="features-container" id="featuresSection">
+        
+        <!-- មុខងារទី ១: គ្រប់គ្រងមីនុយហាង -->
+        <div class="feature-card">
+            <div class="feature-img-box">
+                <!-- ទុកសម្រាប់ដាក់រូបភាពមុខងារទី១ (អាចកែប្រែ URL រูปភាពបាន) -->
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="Menu System">
+            </div>
+            <div class="feature-content">
+                <h3 id="card1Title">ប្រព័ន្ធគ្រប់គ្រងមីនុយហាង</h3>
+                <p id="card1Desc">បង្កើត QR Code មីនុយឌីជីថលសម្រាប់ហាងកាហ្វេ និងភោជនីយដ្ឋានយ៉ាងងាយស្រួល។</p>
+                <a href="#authSection" class="btn-detail" id="card1Btn">សាកល្បងប្រើ</a>
+            </div>
+        </div>
+
+        <!-- មុខងារទី ២: គ្រប់គ្រងស្តុកទំនិញ -->
+        <div class="feature-card">
+            <div class="feature-img-box">
+                <!-- ទុកសម្រាប់ដាក់រូបភាពមុខងារទី២ -->
+                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80" alt="Inventory">
+            </div>
+            <div class="feature-content">
+                <h3 id="card2Title">ប្រព័ន្ធគ្រប់គ្រងស្តុកទំនិញ</h3>
+                <p id="card2Desc">តាមដានទំនិញចូល-ចេញ ឆែកចំនួនស្តុក និងគ្រប់គ្រងទំនិញក្នុងហាងបានឆាប់រហ័ស។</p>
+                <a href="#authSection" class="btn-detail" id="card2Btn">សាកល្បងប្រើ</a>
+            </div>
+        </div>
+
+        <!-- មុខងារទី ៣: ប្រព័ន្ធហាងបញ្ចាំ -->
+        <div class="feature-card">
+            <div class="feature-img-box">
+                <!-- ទុកសម្រាប់ដាក់រូបភាពមុខងារទី៣ -->
+                <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80" alt="Pawnshop">
+            </div>
+            <div class="feature-content">
+                <h3 id="card3Title">ប្រព័ន្ធគ្រប់គ្រងហាងបញ្ចាំ</h3>
+                <p id="card3Desc">កត់ត្រាព័ត៌មានអតិថិជន លេខ IMEI ទូរស័ព្ទ និងគណនាការប្រាក់យ៉ាងសុក្រឹត។</p>
+                <a href="#authSection" class="btn-detail" id="card3Btn">សាកល្បងប្រើ</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Login & Register Section -->
+    <div class="auth-section" id="authSection">
+        <div class="auth-tabs">
+            <button onclick="switchTab('login')" id="loginTabBtn" style="color: #2563eb; border-bottom: 2px solid #2563eb;">ចូលគណនី (Login)</button>
+            <button onclick="switchTab('register')" id="regTabBtn" style="color: #64748b; border-bottom: none;">ចុះឈ្មោះ (Register)</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label id="lblLoginEmail">អ៊ីម៉ែល (Email)</label>
+                <input type="email" id="loginEmail" required>
+            </div>
+            <div class="form-group">
+                <label id="lblLoginPass">ពាក្យសម្ងាត់ (Password)</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <button type="submit" class="btn-submit" id="btnLoginSubmit">ចូលគណនី</button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" onsubmit="handleRegister(event)" style="display: none;">
+            <div class="form-group">
+                <label id="lblRegName">ឈ្មោះហាង ឬ ឈ្មោះអ្នកប្រើប្រាស់</label>
+                <input type="text" id="regName" required>
+            </div>
+            <div class="form-group">
+                <label id="lblRegEmail">អ៊ីម៉ែល (Email)</label>
+                <input type="email" id="regEmail" required>
+            </div>
+            <div class="form-group">
+                <label id="lblRegPass">ពាក្យសម្ងាត់ (Password)</label>
+                <input type="password" id="regPassword" required>
+            </div>
+            <button type="submit" class="btn-submit" id="btnRegSubmit" style="background-color: #059669;">បង្កើតគណនី</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p id="footerText">&copy; 2026 RS System Pro. រក្សាសិទ្ធិគ្រប់យ៉ាង។</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // បើក/បិទ Menu ពេលចុចសញ្ញាត្រេបី
+        function toggleMenu() {
+            const menu = document.getElementById('dropdownMenu');
+            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // បិទ Menu វិញពេលចុចក្រៅ
+        window.onclick = function(event) {
+            if (!event.target.matches('.menu-btn')) {
+                const menu = document.getElementById('dropdownMenu');
+                if (menu && menu.style.display === 'flex') {
+                    menu.style.display = 'none';
+                }
+            }
+        }
+
+        // វចនានុក្រមប្តូរភាសា
+        const translations = {
+            km: {
+                title: "RS System Pro - ប្រព័ន្ធគ្រប់គ្រងអាជីវកម្មគ្រប់ជ្រុងជ្រោយ",
+                navLogin: "ចូលគណនី",
+                menuHome: "🏠 ទំព័រដើម",
+                menuFeatures: "⚙️ មុខងារប្រព័ន្ធ",
+                menuAccount: "👤 គណនី (Login/Register)",
+                heroTitle: "ប្រព័ន្ធគ្រប់គ្រងអាជីវកម្ម និងហាងទំនិញគ្រប់ជ្រុងជ្រោយ",
+                heroDesc: "ជម្រើសដ៏ល្អបំផុតសម្រាប់គ្រប់គ្រងមីនុយហាង ស្តុកទំនិញ ចំណូល-ចំណាយ និងហាងបញ្ចាំដោយស្វ័យប្រវត្តិ។",
+                card1Title: "ប្រព័ន្ធគ្រប់គ្រងមីនុយហាង",
+                card1Desc: "បង្កើត QR Code មីនុយឌីជីថលសម្រាប់ហាងកាហ្វេ និងភោជនីយដ្ឋានយ៉ាងងាយស្រួល។",
+                card1Btn: "សាកល្បងប្រើ",
+                card2Title: "ប្រព័ន្ធគ្រប់គ្រងស្តុកទំនិញ",
+                card2Desc: "តាមដានទំនិញចូល-ចេញ ឆែកចំនួនស្តុក និងគ្រប់គ្រងទំនិញក្នុងហាងได้ឆាប់រហ័ស។",
+                card2Btn: "សាកល្បងប្រើ",
+                card3Title: "ប្រព័ន្ធគ្រប់គ្រងហាងបញ្ចាំ",
+                card3Desc: "កត់ត្រាព័ត៌មានអតិថិជន លេខ IMEI ទូរស័ព្ទ និងគណនាការប្រាក់យ៉ាងសុក្រឹត។",
+                card3Btn: "សាកល្បងប្រើ",
+                loginTab: "ចូលគណនី (Login)",
+                regTab: "ចុះឈ្មោះ (Register)",
+                lblLoginEmail: "អ៊ីម៉ែល (Email)",
+                lblLoginPass: "ពាក្យសម្ងាត់ (Password)",
+                btnLoginSubmit: "ចូលគណនី",
+                lblRegName: "ឈ្មោះហាង ឬ ឈ្មោះអ្នកប្រើប្រាស់",
+                lblRegEmail: "អ៊ីម៉ែល (Email)",
+                lblRegPass: "ពាក្យសម្ងាត់ (Password)",
+                btnRegSubmit: "បង្កើតគណនី",
+                footer: "&copy; 2026 RS System Pro. រក្សាសិទ្ធិគ្រប់យ៉ាង។"
+            },
+            en: {
+                title: "RS System Pro - All-in-One Business Management System",
+                navLogin: "Login",
+                menuHome: "🏠 Home",
+                menuFeatures: "⚙️ Features",
+                menuAccount: "👤 Account (Login/Register)",
+                heroTitle: "Comprehensive Business & Store Management System",
+                heroDesc: "The ultimate solution for restaurant menus, inventory tracking, expenses, and automated pawnshop management.",
+                card1Title: "Menu Management System",
+                card1Desc: "Easily generate digital QR code menus for cafes and restaurants.",
+                card1Btn: "Try Now",
+                card2Title: "Inventory Management",
+                card2Desc: "Track stock levels, incoming/outgoing products, and store inventory seamlessly.",
+                card2Btn: "Try Now",
+                card3Title: "Pawnshop System",
+                card3Desc: "Record customer details, phone IMEI numbers, and calculate interests accurately.",
+                card3Btn: "Try Now",
+                loginTab: "Login",
+                regTab: "Register",
+                lblLoginEmail: "Email",
+                lblLoginPass: "Password",
+                btnLoginSubmit: "Login",
+                lblRegName: "Store Name or Username",
+                lblRegEmail: "Email",
+                lblRegPass: "Password",
+                btnRegSubmit: "Create Account",
+                footer: "&copy; 2026 RS System Pro. All rights reserved."
+            }
+        };
+
+        function changeLanguage(lang) {
+            localStorage.setItem('selectedLang', lang);
+            document.getElementById('htmlTag').setAttribute('lang', lang);
+
+            document.getElementById('pageTitle').innerText = translations[lang].title;
+            document.getElementById('navLoginBtn').innerText = translations[lang].navLogin;
+            document.getElementById('menuHome').innerText = translations[lang].menuHome;
+            document.getElementById('menuFeatures').innerText = translations[lang].menuFeatures;
+            document.getElementById('menuAccount').innerText = translations[lang].menuAccount;
+            document.getElementById('heroTitle').innerText = translations[lang].heroTitle;
+            document.getElementById('heroDesc').innerText = translations[lang].heroDesc;
+            
+            document.getElementById('card1Title').innerText = translations[lang].card1Title;
+            document.getElementById('card1Desc').innerText = translations[lang].card1Desc;
+            document.getElementById('card1Btn').innerText = translations[lang].card1Btn;
+
+            document.getElementById('card2Title').innerText = translations[lang].card2Title;
+            document.getElementById('card2Desc').innerText = translations[lang].card2Desc;
+            document.getElementById('card2Btn').innerText = translations[lang].card2Btn;
+
+            document.getElementById('card3Title').innerText = translations[lang].card3Title;
+            document.getElementById('card3Desc').innerText = translations[lang].card3Desc;
+            document.getElementById('card3Btn').innerText = translations[lang].card3Btn;
+
+            document.getElementById('loginTabBtn').innerText = translations[lang].loginTab;
+            document.getElementById('regTabBtn').innerText = translations[lang].regTab;
+            document.getElementById('lblLoginEmail').innerText = translations[lang].lblLoginEmail;
+            document.getElementById('lblLoginPass').innerText = translations[lang].lblLoginPass;
+            document.getElementById('btnLoginSubmit').innerText = translations[lang].btnLoginSubmit;
+            document.getElementById('lblRegName').innerText = translations[lang].lblRegName;
+            document.getElementById('lblRegEmail').innerText = translations[lang].lblRegEmail;
+            document.getElementById('lblRegPass').innerText = translations[lang].lblRegPass;
+            document.getElementById('btnRegSubmit').innerText = translations[lang].btnRegSubmit;
+            document.getElementById('footerText').innerHTML = translations[lang].footer;
+        }
+
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const loginBtn = document.getElementById('loginTabBtn');
+            const regBtn = document.getElementById('regTabBtn');
+
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                loginBtn.style.color = '#2563eb';
+                loginBtn.style.borderBottom = '2px solid #2563eb';
+                regBtn.style.color = '#64748b';
+                regBtn.style.borderBottom = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                regBtn.style.color = '#059669';
+                regBtn.style.borderBottom = '2px solid #059669';
+                loginBtn.style.color = '#64748b';
+                loginBtn.style.borderBottom = 'none';
+            }
+        }
+
+        const WEB_APP_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            const data = { action: "register", name: name, email: email, password: password };
+
+            fetch(WEB_APP_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            }).then(() => {
+                alert("ចុះឈ្មោះជោគជ័យ! (Account Created Successfully)");
+                switchTab('login');
+            }).catch(err => {
+                console.error("Error:", err);
+                alert("មានបញ្ហាក្នុងការចុះឈ្មោះ!");
+            });
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            alert("កំពុងពិនិត្យគណនីសម្រាប់: " + email);
+        }
+
+        window.onload = function() {
+            const savedLang = localStorage.getItem('selectedLang') || 'km';
+            document.getElementById('langSelect').value = savedLang;
+            changeLanguage(savedLang);
+        };
+    </script>
+</body>
+</html>
