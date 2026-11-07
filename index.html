@@ -164,7 +164,6 @@
             flex-direction: column;
         }
         
-        /* Individual Card Slider (៣ សន្លឹកដាច់ដោយឡែកពីគ្នា) */
         .card-slider {
             width: 100%;
             height: 200px;
@@ -292,13 +291,12 @@
                 </select>
             </div>
 
-            <!-- ខាងស្តាំ៖ Login or Register / Profile -->
             <div id="rightAuthArea">
                 <button class="auth-nav-btn" onclick="toggleAuthDropdown()" id="navLoginRegBtn">Login or Register</button>
             </div>
         </div>
 
-        <!-- Left Menu Dropdown (មានប្រព័ន្ធទាំង៣ ដូចដើម) -->
+        <!-- Left Menu Dropdown -->
         <div class="left-dropdown" id="leftDropdownMenu">
             <a href="#heroSection" onclick="toggleLeftMenu()" id="menuHome">🏠 ទំព័រដើម</a>
             <a href="#featuresSection" onclick="checkAuthAndNavigate('menu.html')" id="menuFeature1">⚙️ ប្រព័ន្ធគ្រប់គ្រងមីនុយហាង</a>
@@ -359,7 +357,7 @@
                 <h4 id="profileDisplayName" style="font-size: 14px; color: #1e293b;"></h4>
                 <p id="profileDisplayShop" style="font-size: 12px; color: #64748b; margin-bottom: 10px;"></p>
                 <label style="font-size: 12px; color: #2563eb; cursor: pointer; display: block; margin-bottom: 10px;">
-                    📷 <span id="txtChangeAvatar">ប្តូររូបប្រូហ្វាល</span> <input type="file" accept="image/*" style="display: none;" onchange="previewAvatar(event)">
+                    📷 <span id="txtChangeAvatar">ប្តូររូបប្រូហ្វាល/ហាង</span> <input type="file" accept="image/*" style="display: none;" onchange="previewAvatar(event)">
                 </label>
                 <button onclick="handleLogout()" class="btn-action" style="width: 100%; background-color: #dc2626; font-size: 12px; padding: 6px;" id="btnLogout">ចាកចេញ</button>
             </div>
@@ -372,10 +370,9 @@
         <p id="heroDesc">ដំណោះស្រាយដ៏ល្អបំផុតសម្រាប់គ្រប់គ្រងមីនុយហាង ស្តុកទំនិញ និងហាងបញ្ចាំដោយស្វ័យប្រវត្តិ។</p>
     </div>
 
-    <!-- Features Cards Grid with Separate 3-Image Sliders (ប្រព័ន្ធទាំង៣ ដូចដើម) -->
+    <!-- Features Cards Grid -->
     <div class="features-container" id="featuresSection">
         
-        <!-- ប្រព័ន្ធទី ១: មីនុយហាង -->
         <div class="feature-card">
             <div class="card-slider" id="slider1">
                 <div class="card-slide active"><img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="Menu 1"></div>
@@ -389,7 +386,6 @@
             </div>
         </div>
 
-        <!-- ប្រព័ន្ធទី ២: ស្តុកទំនិញ -->
         <div class="feature-card">
             <div class="card-slider" id="slider2">
                 <div class="card-slide active"><img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80" alt="Stock 1"></div>
@@ -403,7 +399,6 @@
             </div>
         </div>
 
-        <!-- ប្រព័ន្ធទី ៣: ហាងបញ្ចាំ -->
         <div class="feature-card">
             <div class="card-slider" id="slider3">
                 <div class="card-slide active"><img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80" alt="Pawn 1"></div>
@@ -426,7 +421,7 @@
 
     <!-- JavaScript -->
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbz3KhexAe5_pyvMaMr8CMkrPcyLdaVMZxowy9jU7XbQunqqE5bdrKaxaWa1fB3Xm4Rz/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbx1-FOcgB390KE9Rft5zt0jLlAq6C_yLbEdaT2Ga9zlIlt70S5aQ1e-nYdvl6U3i6rK/exec';
 
         function toggleLeftMenu() {
             const menu = document.getElementById('leftDropdownMenu');
@@ -499,7 +494,13 @@
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('rs_shop_username', res.username);
                     localStorage.setItem('rs_shop_name', res.shopname);
-                    if(res.avatar) localStorage.setItem('userAvatar', res.avatar);
+                    
+                    // ទាញយករូបភាពពី Column H (Sheet) មកផ្ដល់ជូន LocalStorage ជារៀងរហូត
+                    if (res.avatar) {
+                        localStorage.setItem('userAvatar', res.avatar);
+                    } else {
+                        localStorage.removeItem('userAvatar');
+                    }
 
                     updateAuthUI();
                     document.getElementById('authDropdownMenu').style.display = 'none';
@@ -538,6 +539,7 @@
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('rs_shop_username', username);
                     localStorage.setItem('rs_shop_name', shopName);
+                    localStorage.removeItem('userAvatar');
 
                     updateAuthUI();
                     document.getElementById('authDropdownMenu').style.display = 'none';
@@ -561,6 +563,7 @@
             Swal.fire({ icon: 'info', title: lang === 'en' ? 'Signed Out' : 'បានចាកចេញ', text: lang === 'en' ? 'Logged out successfully!' : 'អ្នកបានចាកចេញពីគណនីជោគជ័យ!', timer: 1500, showConfirmButton: false });
         }
 
+        // មុខងារបំលែងរូបភាពជា Base64 និងរក្សាទុកក្នុង Column H នៃ Google Sheets (ដកពាក្យ Google Sheets ចេញពី Alert)
         async function previewAvatar(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -570,10 +573,20 @@
                 localStorage.setItem('userAvatar', base64Img);
                 updateAuthUI();
 
-                await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'updateAvatar', username: localStorage.getItem('rs_shop_username'), avatar: base64Img })
-                });
+                Swal.showLoading();
+                try {
+                    await fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ 
+                            action: 'updateAvatar', 
+                            username: localStorage.getItem('rs_shop_username'), 
+                            avatar: base64Img 
+                        })
+                    });
+                    Swal.fire({ icon: 'success', title: 'ជោគជ័យ', text: 'បានផ្លាស់ប្តូររូបភាពដោយជោគជ័យ!', timer: 1200, showConfirmButton: false });
+                } catch (err) {
+                    console.error("Avatar update error:", err);
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -651,7 +664,7 @@
                 card3Title: "ប្រព័ន្ធគ្រប់គ្រងហាងបញ្ចាំ",
                 card3Desc: "កត់ត្រាព័ត៌មានអតិថិជន លេខ IMEI ទូរស័ព្ទ និងគណនាការប្រាក់យ៉ាងសុក្រឹត។",
                 card3Btn: "សាកល្បងប្រើ",
-                txtChangeAvatar: "ប្តូររូបប្រូហ្វាល",
+                txtChangeAvatar: "ប្តូររូបប្រូហ្វាល/ហាង",
                 btnLogout: "ចាកចេញ",
                 footerText: "&copy; 2026 RS System Pro. រក្សាសិទ្ធិគ្រប់យ៉ាង។"
             },
@@ -685,7 +698,7 @@
                 card3Title: "Pawnshop System",
                 card3Desc: "Record customer details, phone IMEI numbers, and calculate interests accurately.",
                 card3Btn: "Try Now",
-                txtChangeAvatar: "Change Avatar",
+                txtChangeAvatar: "Change Avatar/Logo",
                 btnLogout: "Sign Out",
                 footerText: "&copy; 2026 RS System Pro. All rights reserved."
             }
