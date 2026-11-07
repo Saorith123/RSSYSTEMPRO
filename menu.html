@@ -59,9 +59,9 @@
         .price-group { display: flex; gap: 10px; }
         .price-group .form-group { flex: 1; }
 
-        /* ធ្វើឱ្យ Filter Buttons អូស (Swipe) បានរលូនស្មូត មិនញាក់ */
+        /* Filter Buttons អូស (Swipe) បានស្មូតរលូន */
         .filter-container { display: flex; gap: 8px; overflow-x: auto; white-space: nowrap; padding-bottom: 8px; margin-bottom: 15px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-        .filter-container::-webkit-scrollbar { display: none; } /* បំបាត់ Scrollbar ឱ្យមើលទៅស្អាត */
+        .filter-container::-webkit-scrollbar { display: none; }
         .filter-btn { background: #e2e8f0; color: #334155; border: none; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 500; flex-shrink: 0; }
         .filter-btn.active, .filter-btn:hover { background: #2563eb; color: #fff; }
 
@@ -71,7 +71,7 @@
         .desktop-table th, .desktop-table td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
         .desktop-table th { color: #1e293b; font-size: 0.85rem; font-weight: bold; background: #f8fafc; }
 
-        /* Mobile Card View (Swipe/Scroll ស្មូតល្អ) */
+        /* Mobile Card View */
         .mobile-cards-container { display: none; flex-direction: column; gap: 12px; margin-top: 10px; }
         .mobile-item-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; }
         .mobile-item-img { width: 65px; height: 65px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; flex-shrink: 0; background: #fff; cursor: pointer; }
@@ -788,6 +788,17 @@
             const shopPrefix = lang === 'en' ? 'Shop: ' : 'ហាង៖ ';
             document.getElementById('shopTitle').textContent = shopPrefix + shopName;
             generateShopQR(username);
+            
+            // បង្ហាញសញ្ញាវិល Loading ពេលកំពុងទាញទិន្នន័យ
+            const loadingHtml = `
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <span id="loadingTxt">${lang === 'en' ? 'Loading Data...' : '⏳ កំពុងទាញទិន្នន័យ...'}</span>
+                </div>
+            `;
+            document.getElementById('admin-table-body').innerHTML = `<tr><td colspan="6">${loadingHtml}</td></tr>`;
+            document.getElementById('mobile-cards-body').innerHTML = loadingHtml;
+
             try {
                 const res = await fetch(API_URL, {
                     method: 'POST',
