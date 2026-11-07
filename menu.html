@@ -11,23 +11,30 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Preahvihear', 'Siemreap', 'Inter', sans-serif, Arial; }
         body { background-color: #f4f7f6; color: #333; line-height: 1.6; padding-bottom: 70px; }
         
-        header { background-color: #1e293b; color: white; padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; position: relative; }
-        .header-left { display: flex; align-items: center; gap: 15px; }
-        .menu-btn { background: none; border: none; color: white; font-size: 22px; cursor: pointer; }
-        .logo { font-size: 20px; font-weight: bold; color: #38bdf8; text-decoration: none; }
-        .header-right { display: flex; align-items: center; gap: 15px; position: relative; }
+        /* Header Responsive ស្វ័យប្រវត្តិតាមទំហំអេក្រង់ */
+        header { background-color: #1e293b; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; flex-wrap: wrap; gap: 8px; }
+        .header-left { display: flex; align-items: center; gap: 10px; }
+        .menu-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
+        .logo { font-size: 18px; font-weight: bold; color: #38bdf8; text-decoration: none; white-space: nowrap; }
+        .header-right { display: flex; align-items: center; gap: 10px; position: relative; }
         
-        /* ធ្វើឱ្យ Language Switcher ស្អាត មិនលោតពណ៌សខុសទម្រង់ */
-        .lang-switcher select { padding: 6px 12px; border-radius: 6px; border: 1px solid #475569; background-color: #1e293b; color: white; font-size: 13px; cursor: pointer; outline: none; }
+        /* Language Switcher */
+        .lang-switcher select { padding: 5px 8px; border-radius: 6px; border: 1px solid #475569; background-color: #1e293b; color: white; font-size: 12px; cursor: pointer; outline: none; }
         .lang-switcher select option { background-color: #1e293b; color: white; }
 
-        .user-profile-icon { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 2px solid #38bdf8; }
+        .user-profile-icon { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 2px solid #38bdf8; }
 
-        .left-dropdown { position: absolute; top: 60px; left: 15px; background: white; color: #333; width: 250px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); border-radius: 8px; display: none; flex-direction: column; z-index: 1000; border: 1px solid #e2e8f0; }
+        /* សម្រាប់ទូរស័ព្ទដៃតូចៗ */
+        @media (max-width: 480px) {
+            header { padding: 8px 12px; }
+            .logo { font-size: 15px; }
+        }
+
+        .left-dropdown { position: absolute; top: 55px; left: 15px; background: white; color: #333; width: 240px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); border-radius: 8px; display: none; flex-direction: column; z-index: 1000; border: 1px solid #e2e8f0; }
         .left-dropdown a { padding: 12px 15px; text-decoration: none; color: #334155; font-size: 13px; border-bottom: 1px solid #f1f5f9; display: block; transition: 0.2s; }
         .left-dropdown a:hover { background-color: #f1f5f9; color: #2563eb; }
 
-        .auth-dropdown { position: absolute; top: 50px; right: 25px; background: white; color: #333; width: 280px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); border-radius: 8px; display: none; flex-direction: column; z-index: 1000; border: 1px solid #e2e8f0; padding: 15px; text-align: center; }
+        .auth-dropdown { position: absolute; top: 50px; right: 15px; background: white; color: #333; width: 270px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); border-radius: 8px; display: none; flex-direction: column; z-index: 1000; border: 1px solid #e2e8f0; padding: 15px; text-align: center; }
 
         .container { max-width: 1000px; width: 100%; margin: 25px auto; padding: 0 15px; } 
         .header-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #1f2937; color: white; padding: 12px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); }

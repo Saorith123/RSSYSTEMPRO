@@ -19,20 +19,22 @@
             color: #333;
             line-height: 1.6;
         }
-        /* Header */
+        /* Header ស្វ័យប្រវត្តិតាមទំហំអេក្រង់ (Responsive) */
         header {
             background-color: #1e293b;
             color: white;
-            padding: 12px 25px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: relative;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .header-left {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
         .menu-btn {
             background: none;
@@ -42,36 +44,43 @@
             cursor: pointer;
         }
         .logo {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             color: #38bdf8;
             text-decoration: none;
+            white-space: nowrap;
         }
         .header-right {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             position: relative;
         }
         .lang-switcher select {
-            padding: 5px 10px;
+            padding: 5px 8px;
             border-radius: 6px;
-            border: none;
-            background-color: #334155;
+            border: 1px solid #475569;
+            background-color: #1e293b;
             color: white;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
+            outline: none;
+        }
+        .lang-switcher select option {
+            background-color: #1e293b;
+            color: white;
         }
         
         .auth-nav-btn {
             background-color: #2563eb;
             color: white;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             border: none;
             text-decoration: none;
+            white-space: nowrap;
         }
         .user-profile-icon {
             width: 35px;
@@ -82,14 +91,28 @@
             border: 2px solid #38bdf8;
         }
 
+        /* សម្រាប់អេក្រង់ទូរស័ព្ទដៃតូចៗ */
+        @media (max-width: 480px) {
+            header {
+                padding: 10px 12px;
+            }
+            .logo {
+                font-size: 16px;
+            }
+            .auth-nav-btn {
+                padding: 5px 10px;
+                font-size: 11px;
+            }
+        }
+
         /* Dropdown Auth */
         .auth-dropdown {
             position: absolute;
-            top: 50px;
-            right: 25px;
+            top: 55px;
+            right: 15px;
             background: white;
             color: #333;
-            width: 280px;
+            width: 270px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.15);
             border-radius: 8px;
             display: none;
@@ -136,12 +159,12 @@
             margin: 10px auto;
         }
         .hero h1 {
-            font-size: 28px;
+            font-size: 26px;
             margin-bottom: 10px;
             color: #0f172a;
         }
         .hero p {
-            font-size: 15px;
+            font-size: 14px;
             color: #64748b;
         }
 
@@ -151,7 +174,7 @@
             margin: 0 auto 40px auto;
             padding: 0 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
         }
         .feature-card {
@@ -495,7 +518,6 @@
                     localStorage.setItem('rs_shop_username', res.username);
                     localStorage.setItem('rs_shop_name', res.shopname);
                     
-                    // ទាញយករូបភាពពី Column H (Sheet) មកផ្ដល់ជូន LocalStorage ជារៀងរហូត
                     if (res.avatar) {
                         localStorage.setItem('userAvatar', res.avatar);
                     } else {
@@ -563,7 +585,6 @@
             Swal.fire({ icon: 'info', title: lang === 'en' ? 'Signed Out' : 'បានចាកចេញ', text: lang === 'en' ? 'Logged out successfully!' : 'អ្នកបានចាកចេញពីគណនីជោគជ័យ!', timer: 1500, showConfirmButton: false });
         }
 
-        // មុខងារបំលែងរូបភាពជា Base64 និងរក្សាទុកក្នុង Column H នៃ Google Sheets (ដកពាក្យ Google Sheets ចេញពី Alert)
         async function previewAvatar(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -610,7 +631,7 @@
                 document.getElementById('profileDisplayName').innerText = username;
                 document.getElementById('profileDisplayShop').innerText = (lang === 'en' ? 'Shop: ' : 'ហាង: ') + shop;
             } else {
-                const btnText = lang === 'en' ? 'Login or Register' : 'ចូលគណនី ឬចុះឈ្មោះ';
+                const btnText = lang === 'en' ? 'Login / Register' : 'ចូលគណនី / ចុះឈ្មោះ';
                 rightAuthArea.innerHTML = `<button class="auth-nav-btn" onclick="toggleAuthDropdown()" id="navLoginRegBtn">${btnText}</button>`;
                 authBoxContent.style.display = 'block';
                 profileBoxContent.style.display = 'none';
@@ -636,7 +657,7 @@
         const translations = {
             km: {
                 title: "RS System Pro - ប្រព័ន្ធគ្រប់គ្រងអាជីវកម្ម",
-                navBtn: "Login or Register",
+                navBtn: "ចូលគណនី / ចុះឈ្មោះ",
                 menuHome: "🏠 ទំព័រដើម",
                 menuFeature1: "⚙️ ប្រព័ន្ធគ្រប់គ្រងមីនុយហាង",
                 menuFeature2: "📦 ប្រព័ន្ធគ្រប់គ្រងស្តុកទំនិញ",
@@ -670,7 +691,7 @@
             },
             en: {
                 title: "RS System Pro - Business Management System",
-                navBtn: "Login or Register",
+                navBtn: "Login / Register",
                 menuHome: "🏠 Home",
                 menuFeature1: "⚙️ Menu Management System",
                 menuFeature2: "📦 Inventory Management",
@@ -711,6 +732,8 @@
 
             const t = translations[lang];
             document.getElementById('pageTitle').innerText = t.title;
+            const loginRegBtn = document.getElementById('navLoginRegBtn');
+            if(loginRegBtn) loginRegBtn.innerText = t.navBtn;
             updateAuthUI();
             document.getElementById('menuHome').innerText = t.menuHome;
             document.getElementById('menuFeature1').innerText = t.menuFeature1;
