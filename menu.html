@@ -59,19 +59,16 @@
         .price-group { display: flex; gap: 10px; }
         .price-group .form-group { flex: 1; }
 
-        /* Filter Buttons អូស (Swipe) បានស្មូតរលូន */
         .filter-container { display: flex; gap: 8px; overflow-x: auto; white-space: nowrap; padding-bottom: 8px; margin-bottom: 15px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
         .filter-container::-webkit-scrollbar { display: none; }
         .filter-btn { background: #e2e8f0; color: #334155; border: none; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 500; flex-shrink: 0; }
         .filter-btn.active, .filter-btn:hover { background: #2563eb; color: #fff; }
 
-        /* Tablet & PC Table View */
         .desktop-table-wrapper { display: block; overflow-x: auto; }
         .desktop-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 0.9rem; }
         .desktop-table th, .desktop-table td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
         .desktop-table th { color: #1e293b; font-size: 0.85rem; font-weight: bold; background: #f8fafc; }
 
-        /* Mobile Card View */
         .mobile-cards-container { display: none; flex-direction: column; gap: 12px; margin-top: 10px; }
         .mobile-item-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; }
         .mobile-item-img { width: 65px; height: 65px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; flex-shrink: 0; background: #fff; cursor: pointer; }
@@ -103,7 +100,6 @@
         .st-in { background: #10b981; color: #fff; }
         .st-out { background: #ef4444; color: #fff; }
 
-        /* Loading Spinner CSS */
         .loading-container { text-align: center; padding: 35px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #64748b; font-size: 0.95rem; }
         .spinner { width: 36px; height: 36px; border: 4px solid #e2e8f0; border-top: 4px solid #2563eb; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -288,7 +284,6 @@
         </div>
 
         <div class="card">
-            <!-- Filter Buttons (អូស Swipe បានយ៉ាងរលូនស្មូត) -->
             <div class="filter-container" id="filter-container">
                 <button class="filter-btn active" onclick="filterAdminTable('ទាំងអស់', this)" id="filterAllBtn">ទាំងអស់</button>
             </div>
@@ -748,12 +743,15 @@
             Swal.fire({ icon: 'success', title: lang === 'en' ? 'Success' : 'ជោគជ័យ', text: lang === 'en' ? 'Saved changes!' : 'បានរក្សាទុកការផ្លាស់ប្តូរ!', timer: 1500, showConfirmButton: false });
         }
 
+        // ដោះស្រាយបញ្ហា QR Code ពេល Download មកចេញជាប្រផេះទទេរ
         function generateShopQR(username) {
             const fullLink = `https://psnb.app/Menu?shop=${username}`;
             document.getElementById('shopShareLink').value = fullLink;
             const qrBox = document.getElementById('qrcode-box');
             qrBox.innerHTML = '';
-            new QRCode(qrBox, { text: fullLink, width: 130, height: 130, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
+            
+            // បង្កើត QR Code ថ្មី
+            new QRCode(qrBox, { text: fullLink, width: 150, height: 150, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
         }
 
         function copyShopLink() {
@@ -766,14 +764,23 @@
 
         function downloadQRCode() {
             const qrImg = document.querySelector('#qrcode-box img');
-            if (!qrImg) return;
-            const canvas = document.createElement('canvas');
-            canvas.width = qrImg.naturalWidth || 300;
-            canvas.height = qrImg.naturalHeight || 300;
-            canvas.getContext('2d').drawImage(qrImg, 0, 0);
+            const qrCanvas = document.querySelector('#qrcode-box canvas');
+            
+            let imageUrl = "";
+            if (qrCanvas) {
+                imageUrl = qrCanvas.toDataURL("image/png");
+            } else if (qrImg) {
+                imageUrl = qrImg.src;
+            }
+
+            if (!imageUrl) {
+                Swal.fire('Error', 'QR Code is not ready yet!', 'error');
+                return;
+            }
+
             const link = document.createElement('a');
             link.download = `QRCode-${currentUsername}.png`;
-            link.href = canvas.toDataURL('image/png');
+            link.href = imageUrl;
             link.click();
         }
 
@@ -789,7 +796,6 @@
             document.getElementById('shopTitle').textContent = shopPrefix + shopName;
             generateShopQR(username);
             
-            // បង្ហាញសញ្ញាវិល Loading ពេលកំពុងទាញទិន្នន័យ
             const loadingHtml = `
                 <div class="loading-container">
                     <div class="spinner"></div>
@@ -1035,6 +1041,7 @@
             Swal.fire({ icon: 'success', title: lang === 'en' ? 'Success!' : 'ជោគជ័យ!', text: lang === 'en' ? 'Deleted successfully!' : 'បានលុបដោយជោគជ័យ!', timer: 1500, showConfirmButton: false });
         }
 
+        // មុខងារអូសរូបភាពមើល (Swipe / Touch Gallery ដោយមិនបាច់ចុចប៊ូតុង)
         function viewFullImages(img1, img2, img3, img4, img5) {
             let imgs = [img1, img2, img3, img4, img5].filter(Boolean);
             if (imgs.length === 0) return;
@@ -1046,42 +1053,65 @@
                 const lang = localStorage.getItem('selectedLang') || 'km';
                 let paginationText = lang === 'en' ? `Photo ${index + 1} of ${imgs.length}` : `រូបទី ${index + 1} នៃ ${imgs.length}`;
                 let closeText = lang === 'en' ? 'Close' : 'បិទ';
-                let prevText = lang === 'en' ? '⬅️ Prev' : '⬅️ មុន';
-                let nextText = lang === 'en' ? 'Next ➡️' : 'បន្ទាប់ ➡️';
 
                 let paginationHtml = imgs.length > 1 ? `<div style="margin-top: 10px; font-size: 14px; color: #fbbf24;">${paginationText}</div>` : '';
-                let navButtons = imgs.length > 1 ? `
-                    <div style="display: flex; justify-content: space-between; margin-top: 12px; gap: 10px;">
-                        <button id="prevImgBtn" style="padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">${prevText}</button>
-                        <button id="nextImgBtn" style="padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">${nextText}</button>
-                    </div>
-                ` : '';
 
                 Swal.fire({
                     imageUrl: currentImg,
                     imageAlt: 'Menu Image',
-                    html: paginationHtml + navButtons,
+                    html: paginationHtml,
                     showConfirmButton: true,
                     confirmButtonText: closeText,
                     confirmButtonColor: '#64748b',
                     background: '#1f2937',
                     color: '#f9fafb',
                     didOpen: () => {
-                        const prevBtn = document.getElementById('prevImgBtn');
-                        const nextBtn = document.getElementById('nextImgBtn');
-                        if (prevBtn) {
-                            prevBtn.onclick = () => {
-                                currentIndex = (currentIndex - 1 + imgs.length) % imgs.length;
-                                Swal.close();
-                                showImageModal(currentIndex);
-                            };
-                        }
-                        if (nextBtn) {
-                            nextBtn.onclick = () => {
+                        const popup = Swal.getPopup();
+                        let touchStartX = 0;
+                        let touchEndX = 0;
+
+                        // គាំទ្រការអូស (Swipe) លើទូរស័ព្ទដៃ
+                        popup.ontouchstart = (e) => {
+                            touchStartX = e.changedTouches[0].screenX;
+                        };
+                        popup.ontouchend = (e) => {
+                            touchEndX = e.changedTouches[0].screenX;
+                            handleSwipe();
+                        };
+
+                        // គាំទ្រការអូសដោយ Mouse លើកុំព្យូទ័រ
+                        let mouseStartX = 0;
+                        popup.onmousedown = (e) => {
+                            mouseStartX = e.clientX;
+                        };
+                        popup.onmouseup = (e) => {
+                            let mouseEndX = e.clientX;
+                            if (mouseStartX - mouseEndX > 50) {
+                                // អូសឆ្វេង -> ទៅរូបបន្ទាប់
                                 currentIndex = (currentIndex + 1) % imgs.length;
                                 Swal.close();
                                 showImageModal(currentIndex);
-                            };
+                            } else if (mouseEndX - mouseStartX > 50) {
+                                // អូសស្តាំ -> ទៅរូបមុន
+                                currentIndex = (currentIndex - 1 + imgs.length) % imgs.length;
+                                Swal.close();
+                                showImageModal(currentIndex);
+                            }
+                        };
+
+                        function handleSwipe() {
+                            if (touchEndX < touchStartX - 40) {
+                                // អូសឆ្វេង -> រូបបន្ទាប់
+                                currentIndex = (currentIndex + 1) % imgs.length;
+                                Swal.close();
+                                showImageModal(currentIndex);
+                            }
+                            if (touchEndX > touchStartX + 40) {
+                                // អូសស្តាំ -> រូបមុន
+                                currentIndex = (currentIndex - 1 + imgs.length) % imgs.length;
+                                Swal.close();
+                                showImageModal(currentIndex);
+                            }
                         }
                     }
                 });
