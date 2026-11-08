@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="pageTitle">RS System Pro - ប្រព័ន្ធគ្រប់គ្រងអាជីវកម្ម</title>
-    <!-- ដាក់ Font ខ្មែរស្អាតៗពី Google Fonts -->
+    
+    <!-- Google AdSense Verification Code Placeholder (ជំនួស ca-pub-xxxxxxxxxxxxxxxx ដោយកូដពិតរបស់បងពេលស្នើសុំ AdSense) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx" crossorigin="anonymous"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Preahvihear&family=Siemreap&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -19,7 +22,6 @@
             color: #333;
             line-height: 1.6;
         }
-        /* Header ស្វ័យប្រវត្តិតាមទំហំអេក្រង់ (Responsive) */
         header {
             background-color: #1e293b;
             color: white;
@@ -91,7 +93,6 @@
             border: 2px solid #38bdf8;
         }
 
-        /* សម្រាប់អេក្រង់ទូរស័ព្ទដៃតូចៗ */
         @media (max-width: 480px) {
             header {
                 padding: 10px 12px;
@@ -105,7 +106,6 @@
             }
         }
 
-        /* Dropdown Auth */
         .auth-dropdown {
             position: absolute;
             top: 55px;
@@ -122,7 +122,6 @@
             padding: 15px;
         }
 
-        /* Left Menu */
         .left-dropdown {
             position: absolute;
             top: 60px;
@@ -151,7 +150,6 @@
             color: #2563eb;
         }
 
-        /* Hero Section */
         .hero {
             text-align: center;
             padding: 35px 20px 15px 20px;
@@ -168,7 +166,6 @@
             color: #64748b;
         }
 
-        /* Features Cards Grid with Separate Image Sliders */
         .features-container {
             max-width: 1100px;
             margin: 0 auto 40px auto;
@@ -247,7 +244,6 @@
             background-color: #1d4ed8;
         }
 
-        /* Form elements */
         .auth-tabs {
             display: flex;
             margin-bottom: 15px;
@@ -294,6 +290,14 @@
             background: #1e293b;
             color: #94a3b8;
             font-size: 13px;
+        }
+        footer a {
+            color: #38bdf8;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -437,14 +441,18 @@
 
     </div>
 
-    <!-- Footer -->
+    <!-- Footer with Privacy Policy & Terms of Service Links for Google AdSense -->
     <footer>
-        <p id="footerText">&copy; 2026 RS System Pro. រក្សាសិទ្ធិគ្រប់យ៉ាង។</p>
+        <p id="footerText">&copy; 2026 RS System Pro. រក្សាសិទ្ធិគ្រប់យ៉ាង។ 
+           | <a href="privacy.html">Privacy Policy</a> 
+           | <a href="terms.html">Terms of Service</a>
+        </p>
     </footer>
 
     <!-- JavaScript -->
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbx1-FOcgB390KE9Rft5zt0jLlAq6C_yLbEdaT2Ga9zlIlt70S5aQ1e-nYdvl6U3i6rK/exec';
+        // ភ្ជាប់ទៅកាន់ API Web App ថ្មីដែលមានសុវត្ថិភាពខ្ពស់
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyu-vvgWW5b0QlZcedO78teocTK6tzkhTZa-ZqQa39iJdKH2OXiUQOM0a3mbxf4Qm3w/exec';
 
         function toggleLeftMenu() {
             const menu = document.getElementById('leftDropdownMenu');
@@ -687,7 +695,7 @@
                 card3Btn: "សាកល្បងប្រើ",
                 txtChangeAvatar: "ប្តូររូបប្រូហ្វាល/ហាង",
                 btnLogout: "ចាកចេញ",
-                footerText: "&copy; 2026 RS System Pro. រក្សាសិទ្ធិគ្រប់យ៉ាង។"
+                footerText: "&copy; 2026 RS System Pro. រក្សាសិទ្ធិគ្រប់យ៉ាង。"
             },
             en: {
                 title: "RS System Pro - Business Management System",
@@ -764,7 +772,6 @@
             document.getElementById('card3Btn').innerText = t.card3Btn;
             document.getElementById('txtChangeAvatar').innerText = t.txtChangeAvatar;
             document.getElementById('btnLogout').innerText = t.btnLogout;
-            document.getElementById('footerText').innerHTML = t.footerText;
         }
 
         function switchTab(tab) {

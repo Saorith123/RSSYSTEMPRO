@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="km" id="htmlTag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - RS System Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Preahvihear&family=Siemreap&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Preahvihear', 'Siemreap', 'Inter', sans-serif, Arial; box-sizing: border-box; }
+        body { background-color: #f9fafb; color: #333; line-height: 1.8; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; }
+        h1 { color: #1e293b; font-size: 22px; }
+        h2 { color: #0f172a; font-size: 16px; margin-top: 20px; }
+        p, li { margin-bottom: 12px; font-size: 14px; color: #475569; }
+        .lang-btn { background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .lang-section { display: none; }
+        .lang-section.active { display: block; }
+        .back-link { display: inline-block; margin-top: 30px; color: #2563eb; text-decoration: none; font-weight: bold; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 id="mainTitle">លក្ខខណ្ឌសេវាកម្ម / Terms of Service</h1>
+        <button class="lang-btn" onclick="toggleLanguage()" id="langToggleBtn">English</button>
+    </header>
+
+    <!-- ភាសាខ្មែរ -->
+    <div id="kmContent" class="lang-section active">
+        <p><strong>ថ្ងៃចុងក្រោយនៃការកែប្រែ៖</strong> មករា ២០២៦</p>
+        <p>ការប្រើប្រាស់ប្រព័ន្ធ <strong>RS System Pro</strong> មានន័យថាអ្នកបានយល់ព្រមតាមលក្ខខណ្ឌ និងគោលការណ៍ផ្សេងៗដែលបានចែងក្នុងទីនេះ។</p>
+        
+        <h2>១. គណនីអ្នកប្រើប្រាស់ (User Accounts)</h2>
+        <p>អ្នកត្រូវរក្សាទុកសម្ងាត់នៃពាក្យសម្ងាត់ (Password) របស់អ្នក។ រាល់សកម្មភាពដែលកើតឡើងក្រោមគណនីរបស់អ្នក គឺស្ថិតក្រោមការទទួលខុសត្រូវរបស់អ្នកផ្ទាល់។</p>
+
+        <h2>២. ការកែប្រែសេវាកម្ម (Service Modifications)</h2>
+        <p>យើងខ្ញុំរក្សាសិទ្ធិក្នុងការកែប្រែ ឬផ្អាកសេវាកម្មណាមួយនៃប្រព័ន្ធជាបណ្ដោះអាសន្ន ឬជាស្ថាពរ ដោយពុំបាច់ដាស់តឿនជាមុន។</p>
+    </div>
+
+    <!-- ភាសាអង់គ្លេស -->
+    <div id="enContent" class="lang-section">
+        <p><strong>Last Updated:</strong> January 2026</p>
+        <p>By using <strong>RS System Pro</strong>, you agree to comply with and be bound by the following terms and conditions.</p>
+        
+        <h2>1. User Accounts</h2>
+        <p>You are responsible for safeguarding your password and account security. Any activity under your account is your sole responsibility.</p>
+
+        <h2>2. Service Modifications</h2>
+        <p>We reserve the right to modify or discontinue, temporarily or permanently, the service with or without notice.</p>
+    </div>
+
+    <a href="index.html" class="back-link" id="backBtn">← ត្រឡប់ទំព័រដើម / Back to Home</a>
+
+    <script>
+        let currentLang = 'km';
+        function toggleLanguage() {
+            currentLang = currentLang === 'km' ? 'en' : 'km';
+            document.getElementById('kmContent').classList.toggle('active', currentLang === 'km');
+            document.getElementById('enContent').classList.toggle('active', currentLang === 'en');
+            document.getElementById('langToggleBtn').innerText = currentLang === 'km' ? 'English' : 'ខ្មែរ';
+            document.getElementById('backBtn').innerText = currentLang === 'km' ? '← ត្រឡប់ទំព័រដើម / Back to Home' : '← Back to Home / ត្រឡប់ទំព័រដើម';
+        }
+    </script>
+</body>
+</html>
